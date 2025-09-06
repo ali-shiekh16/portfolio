@@ -1,0 +1,13 @@
+# Footer
+- DMCA protection
+- llms.txt
+- rrs
+
+
+# Blogs
+- add two blog posts 
+
+# Logo
+- create and Add your own logo.
+
+# change the search
