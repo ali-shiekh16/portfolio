@@ -16,7 +16,7 @@ export const USER: User = {
   address: "Karachi, Pakistan",
   phoneNumber: "KzkyMzE3MjI3NTY5OA==", // E.164 format, base64 encoded (https://t.io.vn/base64-string-converter)
   email: "YWxpLnNoaWVraDE2QG91dGxvb2suY29t", // base64 encoded
-  website: "https://alee.live",
+  website: "https://aleee.tech",
   jobTitle: "Full Stack Developer",
   jobs: [
     {
@@ -44,7 +44,7 @@ Alongside traditional development, I also explore the creative side of the web u
 
 My focus is on writing clean, maintainable code and delivering reliable, scalable solutions that create real impact. I’m always learning, experimenting, and expanding my expertise to stay at the forefront of modern web development.  
 `,
-  avatar: "/images/dp.jpeg",
+  avatar: "/images/dp.png",
   ogImage: "",
   // "https://assets.chanhdai.com/images/screenshot-og-image-light.png?t=1755355653",
   namePronunciationUrl: "/audio/name.mp3",
