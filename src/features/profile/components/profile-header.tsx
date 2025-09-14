@@ -24,7 +24,7 @@ export function ProfileHeader() {
 
         {/* Flag of Viet Nam */}
         <Image
-          className="absolute top-0 -left-5 h-14"
+          className="absolute -top-5 -left-8 h-14 md:top-0 md:-left-5"
           src="/images/flag.svg"
           alt="Pakistan Flag"
           width="100"
