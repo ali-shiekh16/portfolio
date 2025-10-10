@@ -44,7 +44,7 @@ Alongside traditional development, I also explore the creative side of the web u
 
 My focus is on writing clean, maintainable code and delivering reliable, scalable solutions that create real impact. I’m always learning, experimenting, and expanding my expertise to stay at the forefront of modern web development.  
 `,
-  avatar: "/images/dp.png",
+  avatar: "/images/dp-black.png",
   ogImage: "",
   // "https://assets.chanhdai.com/images/screenshot-og-image-light.png?t=1755355653",
   namePronunciationUrl: "/audio/name.mp3",

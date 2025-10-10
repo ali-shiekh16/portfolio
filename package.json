@@ -6,7 +6,7 @@
   "license": "MIT",
   "author": {
     "name": "Muhammed Alik",
-      "email": "ali.shiekh16@outlook.com",
+    "email": "ali.shiekh16@outlook.com",
     "url": "https://github.com/ali-shiekh16"
   },
   "contributors": [
@@ -65,8 +65,12 @@
     "schema-dts": "^1.1.5",
     "sharp": "^0.34.3",
     "sonner": "^2.0.5",
+    "stats-gl": "^3.6.0",
     "swr": "^2.3.3",
     "tailwind-merge": "^3.3.1",
+    "three": "^0.180.0",
+    "tweakpane": "^4.0.5",
+    "uuid": "^13.0.0",
     "vcard-creator": "^0.7.2",
     "zod": "^3.24.2"
   },
@@ -77,6 +81,7 @@
     "@types/node": "^20.14.12",
     "@types/react": "19.1.12",
     "@types/react-dom": "19.1.8",
+    "@types/three": "^0.180.0",
     "eslint": "^9.22.0",
     "eslint-config-next": "15.5.2",
     "eslint-config-prettier": "^10.1.1",
