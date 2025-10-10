@@ -3,7 +3,7 @@ import type { NavItem } from "@/types/nav";
 
 export const SITE_INFO = {
   name: USER.displayName,
-  url: process.env.APP_URL || "https://alee.vercel.app",
+  url: process.env.APP_URL || "https://aleee.tech",
   ogImage: USER.ogImage,
   description: USER.bio,
   keywords: USER.keywords,
@@ -19,10 +19,10 @@ export const MAIN_NAV: NavItem[] = [
     title: "Portfolio",
     href: "/",
   },
-  // {
-  //   title: "Blog",
-  //   href: "/blog",
-  // },
+  {
+    title: "Lab",
+    href: "/lab",
+  },
   // {
   //   title: "Components",
   //   href: "/components",

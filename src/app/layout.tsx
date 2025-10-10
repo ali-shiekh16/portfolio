@@ -51,7 +51,7 @@ export const metadata: Metadata = {
       url: SITE_INFO.url,
     },
   ],
-  creator: "ncdai",
+  creator: "Ali",
   openGraph: {
     siteName: SITE_INFO.name,
     url: "/",
