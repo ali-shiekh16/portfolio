@@ -69,37 +69,38 @@ class Demo extends BaseExperience {
   }
 
   initTweakPane() {
-    // super.initTweakPane();
-    // if (this.tweakPane) {
-    //   this.blackHole.initTweakPane(this.tweakPane);
-    //   const postProcessingFolder = this.tweakPane.addFolder({
-    //     title: "Postprocessing",
-    //   });
-    //   postProcessingFolder.addBinding(this.params, "usePostprocessing");
-    //   postProcessingFolder
-    //     .addBinding(this.params, "bloomStrength", {
-    //       min: 0,
-    //       max: 1,
-    //       step: 0.001,
-    //     })
-    //     .on("change", () => {
-    //       this.bloomPass.strength.value = this.params.bloomStrength;
-    //     });
-    //   postProcessingFolder
-    //     .addBinding(this.params, "bloomThreshold", {
-    //       min: 0,
-    //       max: 1,
-    //       step: 0.001,
-    //     })
-    //     .on("change", () => {
-    //       this.bloomPass.threshold.value = this.params.bloomThreshold;
-    //     });
-    //   postProcessingFolder
-    //     .addBinding(this.params, "bloomRadius", { min: 0, max: 1, step: 0.001 })
-    //     .on("change", () => {
-    //       this.bloomPass.radius.value = this.params.bloomRadius;
-    //     });
-    // }
+    super.initTweakPane();
+    if (this.tweakPane) {
+      this.blackHole.initTweakPane(this.tweakPane);
+      // @ts-ignore
+      const postProcessingFolder = this.tweakPane.addFolder({
+        title: "Postprocessing",
+      });
+      postProcessingFolder.addBinding(this.params, "usePostprocessing");
+      postProcessingFolder
+        .addBinding(this.params, "bloomStrength", {
+          min: 0,
+          max: 1,
+          step: 0.001,
+        })
+        .on("change", () => {
+          this.bloomPass.strength.value = this.params.bloomStrength;
+        });
+      postProcessingFolder
+        .addBinding(this.params, "bloomThreshold", {
+          min: 0,
+          max: 1,
+          step: 0.001,
+        })
+        .on("change", () => {
+          this.bloomPass.threshold.value = this.params.bloomThreshold;
+        });
+      postProcessingFolder
+        .addBinding(this.params, "bloomRadius", { min: 0, max: 1, step: 0.001 })
+        .on("change", () => {
+          this.bloomPass.radius.value = this.params.bloomRadius;
+        });
+    }
   }
 }
 

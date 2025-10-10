@@ -54,6 +54,7 @@ class ParticlesMesh extends InstancedMesh<PlaneGeometry, SpriteNodeMaterial> {
     rotationProgress: 0,
     wigglePower: 0.6,
     wiggleSpeed: 1,
+    morphSpeed: 2,
     isOffset: matchMedia("(orientation: landscape)").matches,
   };
 
@@ -65,6 +66,7 @@ class ParticlesMesh extends InstancedMesh<PlaneGeometry, SpriteNodeMaterial> {
     scale: uniform(this.params.baseParticleScale),
     wigglePower: uniform(this.params.wigglePower),
     wiggleSpeed: uniform(this.params.wiggleSpeed),
+    morphSpeed: uniform(this.params.morphSpeed),
     // isOffset: uniform(this.params.isOffset),
   };
 
@@ -252,6 +254,8 @@ class ParticlesMesh extends InstancedMesh<PlaneGeometry, SpriteNodeMaterial> {
       const speed = toTargetPositionDirection
         .mul(scale)
         .mul(hash(instanceIndex).mul(0.35).add(0.6))
+        // apply morphSpeed uniform (controls how fast particles move toward target)
+        .mul(this.uniforms.morphSpeed)
         .toVar();
 
       /**
@@ -301,38 +305,53 @@ class ParticlesMesh extends InstancedMesh<PlaneGeometry, SpriteNodeMaterial> {
   }
 
   initTweakPane(tweakPane: Pane) {
-    // const folder = tweakPane.addFolder({ title: "Particles" });
-    // folder
-    //   .addBinding(this.params, "wigglePower", { min: 0, max: 0.7, step: 0.01 })
-    //   .on("change", (event) => {
-    //     this.uniforms.wigglePower.value = event.value;
-    //   });
-    // folder
-    //   .addBinding(this.params, "wiggleSpeed", { min: 0, max: 3, step: 0.01 })
-    //   .on("change", (event) => {
-    //     this.uniforms.wiggleSpeed.value = event.value;
-    //   });
-    // folder
-    //   .addBinding(this.params, "baseParticleScale", {
-    //     min: 0.1,
-    //     max: 3,
-    //     step: 0.01,
-    //   })
-    //   .on("change", (event) => {
-    //     this.uniforms.scale.value = event.value;
-    //   });
-    // folder
-    //   .addBinding(this.params, "baseParticleScale", {
-    //     min: 0.1,
-    //     max: 3,
-    //     step: 0.01,
-    //   })
-    //   .on("change", (event) => {
-    //     this.uniforms.scale.value = event.value;
-    //   });
-    // folder.addBinding(this.params, 'isOffset').on('change', (event) => {
-    //     this.uniforms.isOffset.value = event.value;
-    // });
+    // @ts-ignore
+    const folder = tweakPane.addFolder({ title: "Particles" });
+    folder
+      .addBinding(this.params, "wigglePower", { min: 0, max: 0.7, step: 0.01 })
+      // @ts-ignore
+      .on("change", (event) => {
+        this.uniforms.wigglePower.value = event.value;
+      });
+    folder
+      .addBinding(this.params, "wiggleSpeed", { min: 0, max: 3, step: 0.01 })
+      // @ts-ignore
+      .on("change", (event) => {
+        this.uniforms.wiggleSpeed.value = event.value;
+      });
+    folder
+      .addBinding(this.params, "baseParticleScale", {
+        min: 0.1,
+        max: 3,
+        step: 0.01,
+      })
+      // @ts-ignore
+      .on("change", (event) => {
+        this.uniforms.scale.value = event.value;
+      });
+    folder
+      .addBinding(this.params, "baseParticleScale", {
+        min: 0.1,
+        max: 3,
+        step: 0.01,
+      })
+      // @ts-ignore
+      .on("change", (event) => {
+        this.uniforms.scale.value = event.value;
+      });
+    // @ts-ignore
+    folder.addBinding(this.params, "isOffset").on("change", (event) => {
+      // @ts-ignore
+      this.uniforms.isOffset.value = event.value;
+    });
+
+    // Morph speed control
+    folder
+      .addBinding(this.params, "morphSpeed", { min: 0.1, max: 4, step: 0.01 })
+      // @ts-ignore
+      .on("change", (event) => {
+        this.uniforms.morphSpeed.value = event.value;
+      });
   }
 }
 
