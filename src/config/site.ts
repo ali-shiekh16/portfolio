@@ -34,7 +34,7 @@ export const SOURCE_CODE_GITHUB_URL =
   "https://github.com/ali-shiekh16/portfolio";
 
 export const UTM_PARAMS = {
-  utm_source: "aleee.vercel.app",
+  utm_source: "aleee.tech",
   utm_medium: "portfolio_website",
   utm_campaign: "referral",
 };

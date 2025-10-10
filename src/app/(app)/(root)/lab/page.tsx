@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const items: { src: string; href: string; title: string }[] = [
-  { src: "/images/lab/1.jpeg", href: "/lab/blackhole", title: "Blackhole" },
+  { src: "/images/lab/1.jpeg", href: "/lab/black-hole", title: "Blackhole" },
   { src: "/images/lab/2.jpeg", href: "/lab/dissolve", title: "Dissolve" },
   {
     src: "/images/lab/3.jpeg",
