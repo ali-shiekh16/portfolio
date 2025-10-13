@@ -33,9 +33,9 @@ export const PROJECTS: Project[] = [
     id: "zaid-fashion-studio",
     title: "Zaid Fashion Studio",
     period: {
-      start: "2024",
+      start: "2025",
     },
-    link: "https://zaid-fashion-studio.vercel.app/",
+    link: "https://zaidfashionstudio.com/",
     skills: [
       "E-commerce",
       "Next.js",
@@ -61,7 +61,7 @@ export const PROJECTS: Project[] = [
     id: "orbithk",
     title: "OrbitHK - Activity Marketplace",
     period: {
-      start: "2024",
+      start: "2025",
     },
     link: "https://orbithk.com/",
     skills: [
@@ -117,7 +117,7 @@ export const PROJECTS: Project[] = [
     id: "smomid",
     title: "Smomid - Musician Portfolio & Blog",
     period: {
-      start: "2023",
+      start: "2024",
     },
     link: "https://smomid.com/",
     skills: [
