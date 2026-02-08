@@ -16,6 +16,7 @@ import { SocialLinks } from "@/features/profile/components/social-links";
 import { TeckStack } from "@/features/profile/components/teck-stack";
 import { USER } from "@/features/profile/data/user";
 import { cn } from "@/lib/utils";
+import GitHubGraph from "@/features/profile/components/github-graph";
 
 export default function Page() {
   return (
@@ -39,6 +40,9 @@ export default function Page() {
         <Separator />
 
         <About />
+        <Separator />
+
+				<GitHubGraph />
         <Separator />
 
         <TeckStack />
