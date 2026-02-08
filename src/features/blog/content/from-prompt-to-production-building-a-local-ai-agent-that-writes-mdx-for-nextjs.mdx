@@ -1,0 +1,132 @@
+---
+
+title: "From Prompt to Production: Building a Local AI Agent That Writes MDX for Next.js"
+date: "2026-02-09"
+excerpt: "Unlock the power of AI-generated content for your Next.js applications. Learn how to create a local AI agent that generates high-quality MDX content using modern Next.js features like App Router, Server Components, and data-fetching techniques. With AI-generated content, you can streamline your content creation process, improve efficiency, and enhance user experience."
+tags: ["Next.js", "AI", "Tutorial"]
+
+---
+
+# Introduction
+
+In this tutorial, we'll explore how to create a local AI agent that generates Markdown eXtended (MDX) content for a Next.js application using modern features like App Router, Server Components, and data-fetching techniques. With AI-generated content, you can streamline your content creation process, improve efficiency, and enhance user experience. We'll cover the process of setting up the project, creating the AI agent, integrating it with Next.js, and generating MDX content using a Server Component.
+
+## Prerequisites
+
+To follow this tutorial, you'll need:
+
+* Node.js (version 16 or higher)
+* Next.js (version 13 or higher)
+* A code editor or IDE of your choice
+* Familiarity with Next.js concepts, including App Router and Server Components
+
+## Step 1: Setting up the Project
+
+First, let's create a new Next.js project using the `create-next-app` command:
+
+```bash
+npx create-next-app@latest my-next-app --experimental-app --ts
+```
+
+This will create a new Next.js project with the App Router and Server Components enabled.
+
+## Step 2: Creating the AI Agent
+
+For this tutorial, we'll use a simple AI agent that uses a `prompt` and `response` interface to generate MDX content. We'll use the `axios` library to make API calls to a mock AI service. Create a new file called `ai-agent.ts` and add the following code:
+
+```typescript
+// ai-agent.ts
+import axios from 'axios';
+
+const ai = axios.create({
+  baseURL: 'https://api.mock.ai',
+});
+
+export default ai;
+```
+
+## Step 3: Integrating the AI Agent with Next.js
+
+Next, let's create a new Server Component that will use the AI agent to generate MDX content. Create a new file called `components/mdx-generator.ts` and add the following code:
+
+```typescript
+// components/mdx-generator.ts
+import type { NextApiRequest, NextApiResponse } from 'next';
+import axios from 'axios';
+import ai from '../ai-agent';
+import { useClient } from 'next';
+
+const MDXGenerator = ({ prompt }: { prompt: string }) => {
+  const [content, setContent] = useState('');
+
+  useClient(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await ai.get('/generate', {
+          params: {
+            prompt,
+          },
+        });
+        setContent(response.data.content);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchContent();
+  });
+
+  return (
+    <div>
+      <h1>Generated MDX Content</h1>
+      <p>{content}</p>
+    </div>
+  );
+};
+
+export default MDXGenerator;
+```
+
+## Step 4: Creating the MDX Page
+
+Now, let's create a new page that will use the `MDXGenerator` Server Component to generate MDX content. Create a new file called `pages/mdx-page.tsx` and add the following code:
+
+```typescript
+// pages/mdx-page.tsx
+import { MDXGenerator, useMemo } from '../components/mdx-generator';
+
+const MDXPage = () => {
+  const prompt = useMemo(() => 'This is a sample prompt', []);
+
+  return (
+    <div>
+      <h1>MDX Page</h1>
+      <MDXGenerator prompt={prompt} />
+    </div>
+  );
+};
+
+export default MDXPage;
+```
+
+## Step 5: Running the Application
+
+Finally, let's run the application using the following command:
+
+```bash
+npm run dev
+```
+
+Open your web browser and navigate to `http://localhost:3000/mdx-page`. You should see the generated MDX content displayed on the page.
+
+## Conclusion
+
+In this tutorial, we've learned how to create a local AI agent that generates MDX content for a Next.js application using modern features like App Router, Server Components, and data-fetching techniques. With this tutorial, you should now be able to leverage the power of AI and Next.js to generate high-quality content for your applications.
+
+**Try it out and explore more:**
+
+* Experiment with different prompts and AI services to generate unique content.
+* Integrate the AI agent with your existing Next.js application to automate content creation.
+* Explore other uses of AI-generated content in your application, such as chatbots or interactive stories.
+
+By following this tutorial, you've taken the first step towards creating a seamless and efficient content creation process for your Next.js applications. Happy coding!
