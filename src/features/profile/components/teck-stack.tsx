@@ -35,29 +35,26 @@ export function TeckStack() {
                     {tech.theme ? (
                       <>
                         <Image
-                          src={`https://assets.chanhdai.com/images/tech-stack-icons/${tech.key}-light.svg`}
+                          src={`/images/tech-stack-icons/light/${tech.key}.svg`}
                           alt={`${tech.title} light icon`}
                           width={32}
                           height={32}
                           className="hidden [html.light_&]:block"
-                          unoptimized
                         />
                         <Image
-                          src={`https://assets.chanhdai.com/images/tech-stack-icons/${tech.key}-dark.svg`}
+                          src={`/images/tech-stack-icons/dark/${tech.key}.svg`}
                           alt={`${tech.title} dark icon`}
                           width={32}
                           height={32}
                           className="hidden [html.dark_&]:block"
-                          unoptimized
                         />
                       </>
                     ) : (
                       <Image
-                        src={`https://assets.chanhdai.com/images/tech-stack-icons/${tech.key}.svg`}
+                        src={`/images/tech-stack-icons/light/${tech.key}.svg`}
                         alt={`${tech.title} icon`}
                         width={32}
                         height={32}
-                        unoptimized
                       />
                     )}
                     <span className="sr-only">{tech.title}</span>

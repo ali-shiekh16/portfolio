@@ -9,52 +9,21 @@ export const PROJECTS: Project[] = [
     },
     link: "https://aleee.tech",
     skills: [
-      "Portfolio Website",
       "Next.js",
       "TypeScript",
-      "Modern Design",
-      "Responsive Web Design",
       "Performance Optimization",
       "SEO",
-      "Personal Branding",
-    ],
-    description: `A modern personal portfolio website showcasing professional work and skills.
-- Clean and minimalist design approach
-- Responsive layout optimized for all devices
-- Fast loading performance with optimized assets
-- SEO-friendly structure for better discoverability
-- Interactive elements and smooth animations
-- Contact form and social media integration
-- Professional showcase of projects and experience
-- Modern web technologies implementation`,
-    isExpanded: true,
-  },
-  {
-    id: "zaid-fashion-studio",
-    title: "Zaid Fashion Studio",
-    period: {
-      start: "2025",
-    },
-    link: "https://zaidfashionstudio.com/",
-    skills: [
-      "E-commerce",
-      "Next.js",
-      "TypeScript",
-      "Supabase",
-      "Tailwind CSS",
+      "Accessibility",
       "Vercel",
-      "Payment Integration",
-      "Inventory Management",
+      "CI/CD",
+      "Analytics",
     ],
-    description: `A modern e-commerce fashion store with comprehensive shopping features.
-- Complete product catalog with detailed product pages
-- Shopping cart and checkout functionality
-- User authentication and profile management
-- Order management and tracking system
-- Responsive design optimized for mobile and desktop
-- Real-time inventory management
-- Secure payment processing
-- Modern UI/UX with smooth animations`,
+    description: `Personal portfolio engineered as a production-grade Next.js site focused on performance, discoverability, and clear hiring signals.
+- Implemented SSR/ISR, asset optimization, and modern image delivery to maximize load speed and Lighthouse scores.
+- Structured metadata and semantic markup to improve organic search visibility and link-rich previews.
+- Built CI/CD pipeline with automated builds and previews for safe content updates.
+- Prioritized accessibility and responsive UX to ensure consistent experience across devices.
+- Integrated analytics and contact flows to convert visitors into leads for consultancy and hiring.`,
     isExpanded: true,
   },
   {
@@ -65,25 +34,47 @@ export const PROJECTS: Project[] = [
     },
     link: "https://orbithk.com/",
     skills: [
-      "Marketplace Platform",
       "NestJS",
       "Next.js",
       "TypeScript",
+      "PostgreSQL",
+      "Redis",
+      "Stripe",
+      "WebSockets",
       "AWS S3",
-      "RESTful API",
-      "Database Design",
-      "Cloud Storage",
     ],
-    description: `An online activity marketplace connecting service providers with customers.
-- Service provider registration and verification system
-- Activity listing and booking management
-- Customer review and rating system
-- Secure payment processing and escrow services
-- Real-time messaging between providers and customers
-- Advanced search and filtering capabilities
-- AWS S3 integration for media storage
-- Admin dashboard for platform management`,
+    description: `Marketplace platform architected for scalability and secure transactions — connecting providers and customers with a focus on conversion and reliability.
+- Designed RESTful and realtime APIs (NestJS + WebSockets) to support listings, bookings, and live messaging at scale.
+- Implemented secure payment flows with Stripe and escrow mechanics to protect both parties and reduce disputes.
+- Built verification, reviews, and moderation systems to improve trust and platform retention.
+- Modeled relational data for efficient search and filtering; used Redis for caching high-traffic queries.
+- Delivered admin dashboards and operational tooling for analytics, content moderation, and dispute resolution.`,
     isExpanded: true,
+  },
+  {
+    id: "zaid-fashion-studio",
+    title: "Zaid Fashion Studio",
+    period: {
+      start: "2025",
+    },
+    link: "https://zaidfashionstudio.com/",
+    skills: [
+      "Next.js",
+      "TypeScript",
+      "Supabase",
+      "Stripe",
+      "Inventory Systems",
+      "SSR/SEO",
+      "Tailwind CSS",
+      "Vercel",
+    ],
+    description: `E-commerce build focused on conversion, reliable order processing, and operational efficiency.
+- Implemented secure checkout flows and payment reconciliation using Stripe integrated with Supabase for transactional data.
+- Built product catalog, variants, and inventory synchronization to prevent oversells and simplify operations.
+- Optimized pages for SEO and mobile conversions with SSR and performance tuning.
+- Added order management and reporting tools for fulfillment and customer support handoffs.
+- Delivered maintainable UI components and developer workflows to accelerate feature delivery.`,
+    isExpanded: false,
   },
   {
     id: "super-angels",
@@ -93,25 +84,21 @@ export const PROJECTS: Project[] = [
     },
     link: "https://super-angels.eu/",
     skills: [
-      "Investment Platform",
-      "Astro.js",
+      "Astro",
       "TypeScript",
-      "Interactive Animations",
-      "Particle Systems",
       "WebGL",
-      "Modern Web Design",
       "Performance Optimization",
+      "Static Generation",
+      "UX",
+      "Accessibility",
+      "Design Systems",
     ],
-    description: `A sophisticated website for angel investors featuring immersive interactive experiences.
-- Interactive particle animation systems responding to user interactions
-- Smooth scroll animations and transitions
-- Investor portfolio showcase
-- Startup listing and discovery features
-- Modern glassmorphism design elements
-- Optimized performance with Astro.js static generation
-- WebGL-powered visual effects
-- Mobile-responsive design with touch interactions`,
-    isExpanded: true,
+    description: `Investor platform combining high-performance static delivery with rich, interactive visual storytelling to engage stakeholders.
+- Used static generation for fast page loads and SEO while adding progressive WebGL effects for branded engagement.
+- Designed data-driven portfolio and discovery pages to surface high-quality startups and investor metrics.
+- Prioritized accessibility and performance to support investor workflows and due diligence without friction.
+- Implemented analytics and lead-capture to convert interest into introductions and deal flow.`,
+    isExpanded: false,
   },
   {
     id: "smomid",
@@ -121,25 +108,20 @@ export const PROJECTS: Project[] = [
     },
     link: "https://smomid.com/",
     skills: [
-      "Portfolio Website",
       "Next.js",
       "TypeScript",
-      "Rich Text Editor",
-      "Digital Ocean",
       "Cloudinary",
-      "Content Management",
-      "SEO Optimization",
+      "CMS",
+      "DigitalOcean",
+      "SEO",
+      "Media Optimization",
+      "Newsletter",
     ],
-    description: `A comprehensive musician website featuring portfolio showcase and blogging platform.
-- Professional music portfolio with audio/video integration
-- Advanced blog system with rich text editor
-- Cloudinary integration for optimized media delivery
-- Content management system for easy updates
-- SEO-optimized pages for better discoverability
-- Responsive design across all devices
-- Social media integration
-- Newsletter subscription system
-- Deployed on Digital Ocean for reliable performance`,
-    isExpanded: true,
+    description: `Content-first portfolio and blog optimized for media delivery, discoverability, and audience growth.
+- Engineered media pipelines with Cloudinary and CDN delivery to reduce bandwidth and improve playback reliability.
+- Built an editor-first CMS and publishing workflow enabling non-technical content owners to publish quickly and safely.
+- Implemented SEO and structured data to increase organic reach and newsletter signups.
+- Added analytics and engagement hooks to measure content performance and iterate on audience growth strategies.`,
+    isExpanded: false,
   },
 ];

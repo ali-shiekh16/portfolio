@@ -7,42 +7,38 @@ export const USER: User = {
   username: "aleee",
   gender: "male",
   pronouns: "he/him",
-  bio: "Creating with code. Small details matter.",
+  bio: "Software & AI Engineer — building production APIs, ML infra, and scalable cloud systems.",
   flipSentences: [
-    "Senior @ FAST NUCES       ",
-    "Freelancer           ",
-    "Full-stack Developer            ",
+    "Backend Engineer · API & ML Infra",
+    "AI Engineer · FastAPI, LangChain",
+    "Systems & Cloud (GCP)",
   ],
   address: "Karachi, Pakistan",
   phoneNumber: "KzkyMzE3MjI3NTY5OA==", // E.164 format, base64 encoded (https://t.io.vn/base64-string-converter)
   email: "YWxpLnNoaWVraDE2QG91dGxvb2suY29t", // base64 encoded
   website: "https://aleee.tech",
-  jobTitle: "Full Stack Developer",
+  jobTitle: "Software & AI Engineer ",
   jobs: [
     {
-      // title: "Senior Frontend Developer & UI Design Lead",
-      title: "Freelance Full Stack Developer",
-      company: "Freelance",
-      // website: "https://simplamo.com?ref=IN-926722",
+      title: "Software Engineer",
+      company: "AI First Partners",
+      website: "https://aifirstpartners.com",
     },
-    // {
-    //   title: "Founder",
-    //   company: "Quaric",
-    //   website: "https://quaric.com",
-    // },
   ],
   about: `
-Hello world! I’m Ali — a Full-Stack Web Developer passionate about building scalable, high-performance applications and pushing the boundaries of interactive web experiences.  
+I build backend systems and ML-enabled services that power production applications. My work focuses on API design, scalable microservices, data pipelines, and reliable inference/serving layers that meet business SLAs.
 
-I specialize in **Next.js, NestJS, Express.js, and TypeScript**, with experience delivering end-to-end solutions across a variety of industries. My work includes full-stack applications such as e-commerce platforms, marketplaces, and business-critical web systems.  
+Core strengths include designing resilient FastAPI and Node.js services, integrating vector search (Pinecone) and retrieval-augmented generation (RAG) pipelines with LangChain/LangGraph, and deploying inference and API workloads on Google Cloud (Cloud Run, Cloud Build, Artifact Registry, GCS).
 
-Alongside traditional development, I also explore the creative side of the web using **React Three Fiber, WebGL, and interactive front-end technologies**, building projects such as:  
-- Particle animations and advanced visual effects  
-- Real-time product configurators  
-- 3D interactive graphs and data visualizations  
-- and more
+I prioritize observability, security, and automation: automated CI/CD, containerized deployments, structured logging, monitoring, and rigorous testing to reduce downtime and accelerate safe releases. I collaborate closely with product and data teams to translate ML prototypes into production-ready systems.
 
-My focus is on writing clean, maintainable code and delivering reliable, scalable solutions that create real impact. I’m always learning, experimenting, and expanding my expertise to stay at the forefront of modern web development.  
+Technical highlights:
+- Backend: FastAPI, Nest.js, TypeScript, Python
+- ML / AI infra: LangChain, LangGraph, RAG, Pinecone, embeddings, inference orchestration
+- Cloud & infra: Google Cloud Platform (VMs, Cloud Run, GCS, Cloud Build, Triggers), Docker, Kubernetes, Terraform, AWS (S3, EC2, Lambda, VPC) 
+- DevOps & quality: CI/CD (Github Actions), automated testing, observability (logs/metrics/tracing), secure access controls
+
+I enjoy mentoring engineers, improving engineering processes, and delivering measurable improvements in reliability and performance.
 `,
   avatar: "/images/dp.png",
   ogImage: "",
@@ -50,18 +46,19 @@ My focus is on writing clean, maintainable code and delivering reliable, scalabl
   namePronunciationUrl: "/audio/name.mp3",
   keywords: [
     "muhammedali",
-    "muhammed ali",
-    "ali muhammed",
-    "alee",
-    "alee.live",
-    "iamalee",
-    "muhammedalee",
-    "ali.dev",
-    "full stack developer",
-    "muhammed ali developer",
-    "muhammed ali portfolio",
-    "muhammed ali web developer",
+    "backend engineer",
+    "ai engineer",
+    "ml infra",
+    "fastapi",
+    "langchain",
+    "pinecone",
+    "gcp",
+    "cloud run",
+    "ci/cd",
+    "python",
+    "typescript",
+    "next.js",
   ],
 
-  dateCreated: "2025-09-10", // YYYY-MM-DD
+  dateCreated: "2026-02-08", // YYYY-MM-DD
 };

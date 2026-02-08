@@ -11,16 +11,14 @@ export const EDUCATION: Education = [
       end: "06.2026",
     },
     icon: "graduation",
-    description: `Currently pursuing Bachelor's degree in Computer Science from one of Pakistan's leading technology universities.
-- Studying advanced computer science concepts including algorithms, data structures, and software engineering
-- Learning modern programming languages and frameworks
-- Working on various software development projects and assignments
-- Developing strong analytical and problem-solving skills
-- Participating in university programming competitions and tech events`,
+    description: `Pursuing BSc in Computer Science with a strong focus on systems, algorithms, and software engineering. Relevant coursework includes Data Structures & Algorithms, Operating Systems, Databases, Computer Networks, Software Engineering, Machine Learning, and Cloud Computing.
+- Designed and delivered team projects building APIs, data pipelines, and cloud-deployed services.
+- Focused on backend architecture, scalable services, and production readiness: testing, CI/CD, and monitoring.
+- Active in programming competitions and departmental tech initiatives.`,
     achievements: [
-      "Dean's List Recognition",
+      "Dean's List student",
       "Programming Competition Participant",
-      "Academic Excellence",
+      "Capstone & Team Projects in Web/ML systems",
       "Active Member of Computer Science Society",
     ],
     isExpanded: true,
@@ -37,18 +35,13 @@ export const EDUCATION: Education = [
     },
     grade: "A1+ Grade",
     icon: "education",
-    description: `Completed intermediate education with specialization in Computer Science.
-- Studied Mathematics, Physics, Chemistry, and Computer Science
-- Developed strong foundation in scientific reasoning and analytical thinking
-- Excelled in computer science subjects and programming fundamentals
-- Maintained outstanding academic performance throughout`,
+    description: `Completed intermediate education with specialization in Computer Science. Built a strong foundation in mathematics, problem solving, and core programming fundamentals relevant to software engineering.`,
     achievements: [
       "A1+ Grade Achievement",
-      "Subject Topper in Computer Science",
+      "Ranked among top 20 ",
       "Academic Excellence Award",
-      "Perfect Attendance Record",
     ],
-    isExpanded: true,
+    isExpanded: false,
   },
   {
     id: "aptech-diploma",
@@ -60,20 +53,16 @@ export const EDUCATION: Education = [
       end: "08.2020",
     },
     icon: "certificate",
-    description: `Comprehensive diploma program covering various aspects of software development and engineering.
-- **Programming Languages:** C, Java, C#, HTML, CSS, JavaScript
-- **Database Management:** SQL, Database Design, DBMS fundamentals
-- **Web Development:** ASP.NET MVC, Web application development
-- **Desktop Applications:** C# Windows Forms development
-- **Software Engineering:** Development methodologies, project management, testing
-- **Practical Projects:** Built various applications and websites during the course`,
+    description: `Diploma focused on practical software engineering fundamentals and applied development.
+- Core skills: Java, C#, JavaScript, HTML/CSS, and SQL.
+- Covered web and desktop application development, DB design, testing, and software lifecycle practices.
+- Completed hands-on projects that emphasized deliverable quality and engineering discipline.`,
     achievements: [
       "Outstanding Performance Certificate",
       "Best Project Award",
-      "Technical Excellence Recognition",
       "Industry-Ready Certification",
     ],
-    isExpanded: true,
+    isExpanded: false,
   },
   {
     id: "falcon-school-ssc",

@@ -2,6 +2,51 @@ import type { TechStack } from "../types/tech-stack";
 
 export const TECH_STACK: TechStack[] = [
   {
+    key: "langchain",
+    title: "Langchain / LangGraph",
+    href: "https://www.langchain.com/",
+    categories: ["AI", "ML Infra"],
+    theme: true,
+  },
+  {
+    key: "github-actions",
+    title: "GitHub Actions",
+    href: "https://github.com/features/actions",
+    categories: ["CI/CD", "Automation"],
+  },
+  {
+    key: "aws",
+    title: "Amazon Web Services",
+    href: "https://aws.amazon.com/",
+    categories: ["Cloud", "Infrastructure"],
+    theme: true,
+
+  },
+  {
+    key: "gcp",
+    title: "Google Cloud Platform",
+    href: "https://cloud.google.com/",
+    categories: ["Cloud", "Infrastructure"],
+  },
+  {
+    key: "fastapi",
+    title: "FastAPI",
+    href: "https://fastapi.tiangolo.com/",
+    categories: ["Framework", "Backend"],
+  },
+  {
+    key: "docker",
+    title: "Docker",
+    href: "https://www.docker.com/",
+    categories: ["Containerization"],
+  },
+  {
+    key: "kubernetes",
+    title: "Kubernetes",
+    href: "https://kubernetes.io/",
+    categories: ["Containerization"],
+  },
+  {
     key: "typescript",
     title: "TypeScript",
     href: "https://www.typescriptlang.org/",
@@ -20,21 +65,9 @@ export const TECH_STACK: TechStack[] = [
     categories: ["Language"],
   },
   {
-    key: "java",
-    title: "Java",
-    href: "https://www.java.com/",
-    categories: ["Language"],
-  },
-  {
     key: "nodejs",
     title: "Node.js",
     href: "https://nodejs.org/",
-    categories: ["Runtime Environment"],
-  },
-  {
-    key: "bun",
-    title: "Bun",
-    href: "https://bun.sh/",
     categories: ["Runtime Environment"],
   },
   {
@@ -57,92 +90,9 @@ export const TECH_STACK: TechStack[] = [
     categories: ["Framework"],
   },
   {
-    key: "shadcn-ui",
-    title: "shadcn/ui",
-    href: "https://ui.shadcn.com/",
-    categories: ["Library", "Component Library"],
-    theme: true,
-  },
-  {
-    key: "radixui",
-    title: "Radix UI",
-    href: "https://www.radix-ui.com/",
-    categories: ["Library", "Component Library"],
-    theme: true,
-  },
-  {
-    key: "motion",
-    title: "Motion",
-    href: "https://motion.dev/",
-    categories: ["Library", "Animation"],
-  },
-  {
-    key: "mobx-state-tree",
-    title: "MobX-State-Tree",
-    href: "https://mobx-state-tree.js.org/",
-    categories: ["State Management"],
-  },
-  {
-    key: "redux",
-    title: "Redux",
-    href: "https://redux.js.org/",
-    categories: ["State Management"],
-  },
-  {
-    key: "antd",
-    title: "Ant Design",
-    href: "https://ant.design/",
-    categories: ["Library", "UI Library"],
-  },
-  {
-    key: "react-router",
-    title: "React Router",
-    href: "https://reactrouter.com/",
-    categories: ["Library", "Navigation"],
-    theme: true,
-  },
-  {
-    key: "react-navigation",
-    title: "React Navigation",
-    href: "https://reactnavigation.org/",
-    categories: ["Library", "Navigation"],
-  },
-
-  {
     key: "git",
     title: "Git",
     href: "https://git-scm.com/",
     categories: ["Version Control"],
-  },
-  {
-    key: "docker",
-    title: "Docker",
-    href: "https://www.docker.com/",
-    categories: ["Containerization"],
-  },
-  {
-    key: "mysql",
-    title: "MySQL",
-    href: "https://www.mysql.com/",
-    categories: ["Database"],
-  },
-  {
-    key: "mongodb",
-    title: "MongoDB",
-    href: "https://www.mongodb.com/",
-    categories: ["Database"],
-  },
-  {
-    key: "redis",
-    title: "Redis",
-    href: "https://redis.io/",
-    categories: ["Database"],
-  },
-  {
-    key: "chatgpt",
-    title: "ChatGPT",
-    href: "https://chatgpt.com/",
-    categories: ["Tools", "AI"],
-    theme: true,
   },
 ];
