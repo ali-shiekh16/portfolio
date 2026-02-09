@@ -21,7 +21,7 @@ export const USER: User = {
   jobs: [
     {
       title: "Software Engineer",
-      company: "AI First Partners",
+      company: "AIFirstPartners",
       website: "https://aifirstpartners.com",
     },
   ],
@@ -40,7 +40,7 @@ Technical highlights:
 
 I enjoy mentoring engineers, improving engineering processes, and delivering measurable improvements in reliability and performance.
 `,
-  avatar: "/images/dp.png",
+  avatar: "/images/dp.webp",
   ogImage: "",
   // "https://assets.chanhdai.com/images/screenshot-og-image-light.png?t=1755355653",
   namePronunciationUrl: "/audio/name.mp3",

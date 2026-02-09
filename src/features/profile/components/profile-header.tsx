@@ -22,27 +22,14 @@ export function ProfileHeader() {
           />
         </div>
 
-        {/* Flag of Viet Nam */}
-        <Image
-          className="absolute -top-5 -left-8 h-14 md:top-0 md:-left-5"
+        {/* Flag of Pakistan */}
+        {/* <Image
+          className="absolute -top-2 -left-8 h-12 md:top-0 md:-left-8"
           src="/images/flag.svg"
           alt="Pakistan Flag"
           width="100"
           height="100"
-        />
-        {/* <svg
-          className="absolute top-0 -left-px h-8 sm:h-9"
-          viewBox="0 0 30 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect width="30" height="20" fill="#004600" />
-          <polygon
-            width="10"
-            height="10"
-            points="15,4 11.47,14.85 20.71,8.15 9.29,8.15 18.53,14.85"
-            fill="#FFF"
-          />
-        </svg> */}
+        /> */}
       </div>
 
       <div className="flex flex-1 flex-col">
