@@ -17,6 +17,7 @@ import { TeckStack } from "@/features/profile/components/teck-stack";
 import { USER } from "@/features/profile/data/user";
 import { cn } from "@/lib/utils";
 import GitHubGraph from "@/features/profile/components/github-graph";
+import { Certifications } from "@/features/profile/components/certifications";
 
 export default function Page() {
   return (
@@ -57,6 +58,9 @@ export default function Page() {
         <Education />
         <Separator />
 
+        <Certifications />
+        <Separator /> 
+
         {/* 
         <Blog />
         <Separator />
@@ -65,7 +69,8 @@ export default function Page() {
         <Separator />
 
         <Certifications />
-        <Separator /> */}
+        <Separator /> 
+        */}
 
         {/* <Brand />
         <Separator /> */}
