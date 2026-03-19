@@ -30,8 +30,6 @@ I build backend systems and ML-enabled services that power production applicatio
 
 Core strengths include designing resilient FastAPI and Node.js services, integrating vector search (Pinecone) and retrieval-augmented generation (RAG) pipelines with LangChain/LangGraph, and deploying inference and API workloads on Google Cloud (Cloud Run, Cloud Build, Artifact Registry, GCS).
 
-I prioritize observability, security, and automation: automated CI/CD, containerized deployments, structured logging, monitoring, and rigorous testing to reduce downtime and accelerate safe releases. I collaborate closely with product and data teams to translate ML prototypes into production-ready systems.
-
 Technical highlights:
 - Backend: FastAPI, Nest.js, TypeScript, Python
 - ML / AI infra: LangChain, LangGraph, RAG, Pinecone, embeddings, inference orchestration

@@ -9,7 +9,8 @@ export const EXPERIENCES: Experience[] = [
         id: "software-engineer",
         title: "Software Engineer",
         employmentPeriod: {
-          start: "2025",
+          start: 'Nov, 2025',
+          end: 'March, 2026'
         },
         employmentType: "Full-time",
         icon: "code",
@@ -38,7 +39,7 @@ export const EXPERIENCES: Experience[] = [
         isExpanded: true,
       },
     ],
-    isCurrentEmployer: true,
+    isCurrentEmployer: false,
   },
 
   {
@@ -98,7 +99,7 @@ export const EXPERIENCES: Experience[] = [
         title: "Instructor",
         employmentPeriod: {
           start: "2022",
-          end: "2024",
+          end: "2026",
         },
         employmentType: "Full-time",
         icon: "education",

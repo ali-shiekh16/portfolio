@@ -46,7 +46,7 @@ export default function Page() {
 				<GitHubGraph />
         <Separator />
 
-        <TeckStack />
+        {/* <TeckStack /> */}
         <Separator />
 
         <Experiences />
@@ -64,16 +64,8 @@ export default function Page() {
         {/* 
         <Blog />
         <Separator />
-
-        <Awards />
-        <Separator />
-
-        <Certifications />
-        <Separator /> 
         */}
 
-        {/* <Brand />
-        <Separator /> */}
       </div>
     </>
   );
