@@ -173,19 +173,29 @@ export default async function Page({
         />
       </div>
 
-      <Prose className="px-4">
-        <h1 className="screen-line-after mb-6 font-semibold">
-          {post.metadata.title}
-        </h1>
+      <div className="relative">
+        <Prose className="px-4">
+          <h1 className="screen-line-after mb-6 font-semibold">
+            {post.metadata.title}
+          </h1>
 
-        <p className="lead mt-6 mb-6">{post.metadata.description}</p>
+          <p className="lead mt-6 mb-6">{post.metadata.description}</p>
 
-        <InlineTOC items={toc} />
+          <InlineTOC items={toc} className="xl:hidden" />
 
-        <div>
-          <MDX code={post.content} />
-        </div>
-      </Prose>
+          <div>
+            <MDX code={post.content} />
+          </div>
+        </Prose>
+
+        {toc.length > 0 && (
+          <div className="absolute left-full top-8 ml-8 hidden h-[calc(100%-2rem)] w-64 xl:block">
+            <div className="no-scrollbar sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
+              <InlineTOC items={toc} className="w-full" defaultOpen={true} />
+            </div>
+          </div>
+        )}
+      </div>
 
       <div className="screen-line-before h-4 w-full" />
     </>
