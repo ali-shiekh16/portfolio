@@ -1,5 +1,8 @@
+"use client";
+
 import type { TOCItemType } from "fumadocs-core/server";
 import { ChevronsDownUpIcon, ChevronsUpDownIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import {
   Collapsible,
@@ -7,6 +10,41 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
+
+function useActiveItem(itemIds: string[]) {
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: `0% 0% -80% 0%` }
+    );
+
+    itemIds?.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => {
+      itemIds?.forEach((id) => {
+        const element = document.getElementById(id);
+        if (element) {
+          observer.unobserve(element);
+        }
+      });
+    };
+  }, [itemIds]);
+
+  return activeId;
+}
 
 export function InlineTOC({
   items,
@@ -16,6 +54,9 @@ export function InlineTOC({
 }: React.ComponentProps<typeof Collapsible> & {
   items: TOCItemType[];
 }) {
+  const itemIds = items.map((item) => item.url.split("#")[1]).filter(Boolean);
+  const activeId = useActiveItem(itemIds);
+
   if (!items.length) {
     return null;
   }
@@ -38,22 +79,28 @@ export function InlineTOC({
 
       <CollapsibleContent className="overflow-hidden duration-300 data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
         <ul className="flex flex-col px-4 pb-3 text-sm text-muted-foreground">
-          {items.map((item) => (
-            <li
-              key={item.url}
-              className="flex py-1"
-              style={{
-                paddingInlineStart: 16 * Math.max(item.depth - 2, 0),
-              }}
-            >
-              <a
-                className="underline-offset-4 transition-colors hover:text-accent-foreground hover:underline"
-                href={item.url}
+          {items.map((item) => {
+            const isActive = activeId === item.url.split("#")[1];
+            return (
+              <li
+                key={item.url}
+                className="flex py-1"
+                style={{
+                  paddingInlineStart: 16 * Math.max(item.depth - 2, 0),
+                }}
               >
-                {item.title}
-              </a>
-            </li>
-          ))}
+                <a
+                  className={cn(
+                    "underline-offset-4 transition-colors hover:text-accent-foreground hover:underline",
+                    isActive ? "text-foreground font-medium" : ""
+                  )}
+                  href={item.url}
+                >
+                  {item.title}
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </CollapsibleContent>
     </Collapsible>
