@@ -46,7 +46,7 @@ export default function Page() {
 				<GitHubGraph />
         <Separator />
 
-        {/* <TeckStack /> */}
+        <TeckStack />
         <Separator />
 
         <Experiences />

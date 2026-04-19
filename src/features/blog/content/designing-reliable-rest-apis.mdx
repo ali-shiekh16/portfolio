@@ -1,0 +1,162 @@
+---
+title: Designing Reliable REST APIs — Methods, Idempotency, and CORS
+description: We'll cover HTTP methods, what idempotency actually means in production, and the full CORS picture — including the part that trips people up most.
+image: /images/blog/security.jpg
+createdAt: 2026-04-19
+updatedAt: 2026-04-19
+---
+
+## HTTP Methods: More Than a Convention
+
+Most tutorials treat HTTP methods as labels. `GET` means "fetch stuff." `POST` means "create stuff." That's not wrong, but it misses the point. The methods encode *semantic intent*, and that intent changes how clients, proxies, and browsers treat your requests.
+
+**GET** is the simplest. It fetches a resource and must not change server state. That "must not" matters — browsers cache GETs, CDNs cache GETs, and users can hit refresh without worrying. If a GET triggers a state change on your server, you've built a landmine.
+
+**POST** submits data to create or process something. Unlike GET, it's not cacheable, and clients don't assume it's safe to repeat. That's intentional — POST is how you say "this action has consequences."
+
+**PUT** replaces a resource entirely. If you send a `PUT /users/42` with a body, the server should treat that body as the new complete state of user 42. Whatever was there before gets replaced. This is different from PATCH, which only updates the fields you send. PUT is like handing someone a new document. PATCH is like handing them a diff.
+
+**DELETE** removes a resource. Straightforward, but with an interesting idempotency property we'll get to shortly.
+
+**OPTIONS** is the overlooked one. It asks the server: "what methods do you support for this resource, and what headers will you accept?" Browsers use it automatically before cross-origin requests. You don't usually call OPTIONS yourself, but understanding it is the entire key to understanding CORS.
+
+---
+
+## Idempotency: The Property That Prevents Duplicate Orders
+
+Idempotency is one of those words that sounds academic but has very real production consequences. An operation is idempotent if calling it once produces the same result as calling it ten times. The server state after the first call is identical to the server state after the tenth.
+
+GET, PUT, and DELETE are idempotent. POST is not.
+
+Here's why this matters. Say a user clicks "Place Order" on your e-commerce site. The browser sends a `POST /orders`. The request goes out, the server processes it and creates the order, but then the response gets lost — maybe a timeout, maybe a network hiccup. The browser doesn't know if the order was created or not. It just knows it didn't get a response.
+
+What does the user do? They click "Place Order" again.
+
+If your endpoint is POST-based with no idempotency handling, you now have two orders. The user is annoyed, your warehouse is confused, and your customer support team is handling a duplicate shipment complaint.
+
+**Stripe's solution** to this problem is elegant and worth studying. When a client initiates a payment, they generate a unique `Idempotency-Key` (usually a UUID) and include it in the request header. Stripe stores this key on their end. If the same key arrives again, they return the *same response as before* rather than processing a second payment. The client can retry as many times as it wants — the payment happens exactly once.
+
+```bash
+POST /v1/charges
+Idempotency-Key: a8f3d2c1-4b7e-4a9f-b3d2-1c4e7a9f3d2c
+```
+
+This pattern works for any operation that needs "exactly once" semantics. You're not changing POST into an idempotent operation — you're adding a layer on top that makes *retries* safe.
+
+Compare this to DELETE. `DELETE /orders/42` is idempotent by design. The first call deletes the order. The second call... tries to delete an order that no longer exists. The server might return a 404, but the *state* is the same — the order is gone. That's what idempotency means. It doesn't mean "always returns the same status code," it means "always produces the same server state."
+
+| Method | Idempotent | Safe (no side effects) |
+|--------|------------|------------------------|
+| GET    | Yes        | Yes                    |
+| PUT    | Yes        | No                     |
+| DELETE | Yes        | No                     |
+| POST   | No         | No                     |
+| PATCH  | No         | No                     |
+
+PATCH is technically not idempotent in the general case. If your patch operation says "increment the count by 1," calling it twice doubles the increment. If it says "set the count to 5," calling it twice is fine. The idempotency depends on what your PATCH does, so be careful there.
+
+---
+
+## The OPTIONS Method and Why Browsers Care
+
+Before we talk about CORS, it helps to understand the OPTIONS method properly. When a browser wants to make a "non-simple" cross-origin request — one that uses a non-standard header or a method other than GET/POST — it first sends an OPTIONS request to the target server. This is the preflight request.
+
+The preflight looks like this:
+
+```bash
+OPTIONS /api/users HTTP/1.1
+Host: api.example.com
+Origin: https://frontend.example.com
+Access-Control-Request-Method: DELETE
+Access-Control-Request-Headers: Authorization
+```
+
+The browser is essentially asking: "I want to send a DELETE request with an Authorization header. Is that allowed?"
+
+The server responds with what it permits:
+
+```bash
+HTTP/1.1 204 No Content
+Access-Control-Allow-Origin: https://frontend.example.com
+Access-Control-Allow-Methods: GET, POST, DELETE
+Access-Control-Allow-Headers: Authorization
+Access-Control-Max-Age: 86400
+```
+
+If the server's response permits the request, the browser proceeds with the actual DELETE. If not, the browser blocks it and you see that red CORS error in the console.
+
+One useful thing about `Access-Control-Max-Age`: it tells the browser how long to cache the preflight result. Setting it to 86400 (one day) means the browser won't repeat the OPTIONS roundtrip for every single DELETE request from that origin for 24 hours. Without this, every non-simple request would cost an extra network round trip.
+
+---
+
+## CORS: The Full Story
+
+CORS — Cross-Origin Resource Sharing — is widely misunderstood, mostly because people encounter it as an error message before they understand what it's protecting against.
+
+Here's the thing to internalize first: **CORS is a browser security mechanism, not a server security mechanism.** It restricts what JavaScript running in a browser can do. A curl request or a server-to-server call has no CORS restrictions at all. When you're debugging a CORS error and you try the same request in Postman and it works fine, that's expected — Postman isn't a browser.
+
+### What Problem Does CORS Solve?
+
+Browsers enforce a Same-Origin Policy by default. If JavaScript on `https://mybank.com` tries to fetch data from `https://api.mybank.com` (a different origin), the browser blocks it. That policy exists because without it, a malicious site could load in your browser, make requests to your bank using your cookies, and read the responses.
+
+But sometimes cross-origin requests are legitimate. Your frontend at `https://app.example.com` needs to talk to your API at `https://api.example.com`. CORS is the mechanism that lets servers selectively relax the Same-Origin Policy for trusted origins.
+
+### Simple vs. Preflight Requests
+
+Not every cross-origin request triggers a preflight. Browsers classify requests as "simple" if they meet certain conditions: the method is GET, POST, or HEAD, the headers are limited to a small safe list, and the Content-Type is one of `text/plain`, `multipart/form-data`, or `application/x-www-form-urlencoded`.
+
+A simple request looks like this from the browser's perspective:
+
+```bash
+GET /api/products HTTP/1.1
+Host: api.example.com
+Origin: https://shop.example.com
+```
+
+The server responds with the data plus a CORS header:
+
+```bash
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: https://shop.example.com
+Content-Type: application/json
+```
+
+The browser checks: does the `Access-Control-Allow-Origin` header match the requesting origin? If yes, it gives JavaScript access to the response. If no, it blocks it. The request still happened on the server — the server processed it and returned data. The browser just hides the response from the JavaScript code.
+
+For anything more complex — a DELETE, a PUT, a POST with `Content-Type: application/json`, or any custom header — the browser first sends the OPTIONS preflight we looked at above. Only if the preflight succeeds does the actual request go out.
+
+### Handling CORS in Express
+
+In Node.js/Express, the `cors` package is the standard way to handle this:
+
+```javascript
+const cors = require('cors');
+
+// Permissive (fine for development, risky for production)
+app.use(cors());
+
+// Production: restrict to specific origins
+app.use(cors({
+  origin: ['https://app.example.com', 'https://admin.example.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  maxAge: 86400,
+  credentials: true // Required if your requests include cookies
+}));
+```
+
+One thing people miss: if your API uses cookies for authentication and the frontend needs to send them, you need both `credentials: true` on the server and `{ credentials: 'include' }` in your fetch call. And crucially, `Access-Control-Allow-Origin` cannot be a wildcard `*` when credentials are involved — it must be a specific origin. The browser will reject it otherwise.
+
+### A CORS Debugging Checklist
+
+When you hit a CORS error, work through this in order. First, check if the `Access-Control-Allow-Origin` header is present in the server's response. If it's missing, your server isn't configured for CORS at all. Second, if it's a preflight, check that your OPTIONS handler returns the right headers and a 2xx status — some frameworks don't handle OPTIONS by default. Third, if you're sending credentials, verify the origin is explicit (not `*`) and `Access-Control-Allow-Credentials: true` is set.
+
+---
+
+## One Underlying Question
+
+These topics connect more tightly than they first appear. CORS uses OPTIONS to negotiate which methods are allowed. Idempotency tells you which methods are safe to retry. Method semantics tell clients what to expect from each call. They're all answering the same question: what contract is this endpoint making with whoever calls it?
+
+Most production API bugs I've encountered trace back to someone not thinking through one of these angles. An endpoint that creates a record on POST with no idempotency handling. A DELETE that returns 500 on repeat calls instead of 404, breaking retry logic. A CORS config that handles simple requests but not preflights. The individual gaps look small. They add up.
+
+The next post covers the security side of this — cookies, XSS, CSRF, and why your CORS configuration ends up being part of your security model whether you intended it to be or not.

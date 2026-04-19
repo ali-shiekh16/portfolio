@@ -1,0 +1,168 @@
+---
+title: How the Web Actually Talks. A Deep Dive into HTTP
+description: We'll learn the bascis of how HTTP works.
+image: /images/blog/internet.jpg
+createdAt: 2026-04-19
+updatedAt: 2026-04-19
+---
+
+
+> You use HTTP every single day. Every time you open a browser, scroll a feed, or hit an API endpoint — HTTP is the invisible language making it happen. Yet most developers treat it as a black box. This post tears that box open.
+
+## What Even Is HTTP?
+
+HTTP stands for **HyperText Transfer Protocol**. At its core, it is a set of rules that defines how two computers — a client and a server — communicate with each other over the internet.
+
+Think of it like a formal conversation. When you walk into a restaurant, there's an understood protocol: you sit down, a waiter comes over, you place an order, the waiter brings food, you pay and leave. Neither party makes up the rules on the spot — they follow a shared convention. HTTP is exactly that shared convention, but for computers.
+
+The client (usually a browser or a mobile app) sends a **request**, and the server sends back a **response**. Everything on the web — loading a webpage, submitting a form, calling an API — is just this request-response cycle happening over and over.
+
+## The Evolution of HTTP — From 1.0 to 3.0
+
+HTTP didn't appear fully formed. It has evolved significantly over the decades, each version solving the limitations of the last. Here's the story in plain terms.
+
+### HTTP/1.0 — One Request, One Connection
+
+The original HTTP was brutally simple. Every request required opening a brand new TCP connection, sending the request, getting a response, and then immediately closing the connection. If a webpage needed to load 10 images, that meant 10 separate connections — open, fetch, close, repeat. This was incredibly inefficient and slow.
+
+### HTTP/1.1 — Persistent Connections and Pipelining
+
+HTTP/1.1 was a major quality-of-life upgrade. The most important addition was **persistent connections** — the TCP connection is now kept alive and reused for multiple requests. No more tearing down and rebuilding the connection for every single resource.
+
+HTTP/1.1 also introduced **pipelining**, which allows the client to send multiple requests without waiting for each response. However, pipelining had a notorious problem called **head-of-line blocking** — if the first request in the pipeline is slow, all subsequent requests are stuck waiting behind it, like a traffic jam caused by one slow car in a single-lane road.
+
+HTTP/1.1 also gave us the `Host` header (which allows multiple websites to share the same IP address) and chunked transfer encoding. It remained the dominant version of HTTP for nearly two decades.
+
+### HTTP/2 — Multiplexing and Binary Framing
+
+HTTP/2 was a fundamental rethinking of how data is transferred. The most transformative feature is **multiplexing** — multiple requests and responses can now travel over a single TCP connection *simultaneously*, without blocking each other. This completely solved the head-of-line blocking problem that plagued HTTP/1.1 pipelining.
+
+HTTP/2 also introduced **header compression** (called HPACK), because HTTP headers were being sent as plain text and were ballooning in size with every request. And it introduced **server push**, which allows the server to proactively send resources to the client before they're even requested — the server can say "I know you'll need this CSS file, here it is already."
+
+Another key change: HTTP/2 uses a **binary format** instead of plain text. This is less human-readable but far more efficient for machines to parse.
+
+### HTTP/3 — Ditching TCP Entirely
+
+HTTP/3 makes the most radical change of all: it abandons TCP and builds on top of **QUIC**, a transport protocol that runs over UDP. 
+
+Why? Because TCP itself has a head-of-line blocking problem at the transport layer. Even with HTTP/2 multiplexing, if a single TCP packet is lost, *all* streams on that connection have to wait for retransmission. QUIC solves this by treating each stream independently — a lost packet only affects the stream it belongs to.
+
+HTTP/3 also significantly reduces connection establishment time. Traditional HTTPS over TCP requires multiple round trips to establish the TCP connection and then the TLS handshake. QUIC combines these into a single step, making connections much faster — especially noticeable on mobile networks where latency is high.
+
+| Version | Key Innovation |
+|---|---|
+| HTTP/1.0 | Basic request-response, one connection per request |
+| HTTP/1.1 | Persistent connections, reuse TCP connections |
+| HTTP/2 | Multiplexing, binary framing, header compression |
+| HTTP/3 | Built on QUIC/UDP, eliminates transport-level blocking |
+
+---
+
+## HTTP Messages — The Anatomy of a Request and Response
+
+Every HTTP interaction consists of two messages: a **request** from the client and a **response** from the server. Both follow the same basic structure.
+
+### The Request
+
+An HTTP request has three parts.
+
+The **request line** sits at the top and contains three pieces of information: the HTTP method (more on this later), the path being requested, and the HTTP version. For example: `GET /articles/http-guide HTTP/1.1`.
+
+Next come the **headers** — a collection of key-value pairs that carry metadata about the request. Headers tell the server things like what format the client accepts, what language it prefers, whether the request carries authentication credentials, and much more.
+
+Finally, there's the optional **body** — the actual data payload. A `GET` request typically has no body, but a `POST` request submitting a form or sending JSON data will carry its payload here.
+
+```bash
+GET /articles/http-guide HTTP/1.1
+Host: myblog.com
+Accept: text/html
+Authorization: Bearer eyJhbGci...
+```
+
+### The Response
+
+An HTTP response mirrors this structure. It starts with a **status line** containing the HTTP version, a status code, and a human-readable status message — for example `HTTP/1.1 200 OK` or `HTTP/1.1 404 Not Found`.
+
+Then come the **response headers** — metadata from the server describing things like the content type, caching instructions, and security policies.
+
+Finally, the **response body** contains the actual content: an HTML page, a JSON payload, an image, or whatever was requested.
+
+```bash
+HTTP/1.1 200 OK
+Content-Type: application/json
+Cache-Control: max-age=3600
+
+{"id": 1, "title": "HTTP Deep Dive"}
+```
+
+---
+
+## Why Do We Need HTTP Headers?
+
+Here's a question worth pausing on: why don't we just send the raw data and be done with it? Why do we need this extra layer of metadata?
+
+The answer is that HTTP is a general-purpose protocol. It needs to handle text documents, images, videos, JSON APIs, file downloads, authentication, caching, compression, security policies, and hundreds of other use cases — all using the same underlying mechanism. Headers are the extensibility mechanism that makes this possible.
+
+Without headers, the server would have no way of knowing what format the client can handle. The client would have no way of passing authentication credentials. There would be no way to instruct the browser to cache a response, or to set a cookie, or to tell the browser to only load resources from trusted origins.
+
+Think of headers as the metadata envelope around your data. The letter (body) contains the message, but the envelope (headers) carries all the instructions for how to handle it.
+
+---
+
+## Types of HTTP Headers
+
+HTTP headers are organized into four categories based on their purpose.
+
+**Request headers** are sent by the client to give the server context about the request. `Accept: application/json` tells the server the client wants a JSON response. `Authorization: Bearer <token>` carries authentication credentials. `User-Agent` identifies the browser or client making the request.
+
+**Response headers** are sent by the server to give the client instructions about the response. `Content-Type: application/json` tells the client how to interpret the body. `Set-Cookie` instructs the browser to store a cookie. `Cache-Control` tells the client how long to cache the response.
+
+**Representation headers** (sometimes called entity headers) describe the body of the message — things like `Content-Encoding: gzip` (the body is compressed) or `Content-Length: 348` (the body is 348 bytes long).
+
+**Security headers** are a special category of response headers that instruct the browser to enforce security policies. `Strict-Transport-Security` forces HTTPS. `Content-Security-Policy` restricts which resources the page can load. These are worth their own deep dive, but knowing they exist and live in headers is the key insight.
+
+---
+
+## HTTP Methods — The Verbs of the Web
+
+Every HTTP request declares an **intent** using a method (sometimes called a verb). The method tells the server what operation the client wants to perform.
+
+**GET** is for retrieving data. It should have no side effects — a GET request should never modify anything on the server. This is why browsers can safely prefetch GET requests and why they can be cached aggressively.
+
+**POST** is for creating a new resource or submitting data for processing. It is not idempotent — sending the same POST request twice may create two separate resources.
+
+**PUT** is for replacing a resource entirely. If you PUT a user object, the server replaces the entire existing user with what you sent.
+
+**PATCH** is for partial updates. Instead of replacing the whole resource, PATCH modifies only the fields you specify.
+
+**DELETE** is for removing a resource. Sending the same DELETE request multiple times is safe — after the first request, the resource is gone, and subsequent requests simply confirm it's still gone.
+
+**HEAD** is identical to GET but the server returns only the headers, with no body. Useful for checking if a resource exists or has changed without downloading the entire thing.
+
+**OPTIONS** is used to ask the server what methods and headers it supports for a given URL. Browsers use this automatically as part of the CORS preflight mechanism — more on this in Post 2.
+
+---
+
+## Stateless vs Stateful — HTTP's Core Design Decision
+
+One of the most important characteristics of HTTP is that it is fundamentally **stateless**. This means every request is completely independent. The server does not remember anything about previous requests from the same client. Each request must carry all the information the server needs to fulfill it.
+
+This was a deliberate design choice, and it has profound implications. Statelessness makes HTTP incredibly scalable — because any server in a load-balanced cluster can handle any request without needing to share session information with other servers. It also makes the protocol simple and resilient.
+
+But statelessness creates an obvious problem for real applications: users need to stay logged in, shopping carts need to persist, preferences need to be remembered. If every request is independent, how does the server know who you are?
+
+The answer is that **state is managed on top of HTTP**, not inside it. The most common mechanism is **cookies** — the server sends a small piece of data to the browser, the browser stores it and automatically attaches it to every subsequent request. The server reads that cookie to identify the user and look up their session in a database. The illusion of statefulness is created, while the underlying protocol remains stateless.
+
+This distinction — stateless protocol, stateful application layer — is one of the most important architectural concepts in web development. It's why scaling a web application is fundamentally about managing shared state (sessions, caches, databases) rather than about the HTTP layer itself.
+
+---
+
+## What's Next
+
+You now have a solid mental model of how HTTP works at its foundations: what it is, how it evolved, what a message looks like, why headers exist, what the methods mean, and why statelessness matters.
+
+In **Post 2**, we'll build on this foundation to explore REST API design — specifically HTTP methods and idempotency in depth, and how browsers use the OPTIONS method to enforce CORS policies between different origins. That's where theory meets the practical reality of building and consuming APIs.
+
+---
+
+*Written as part of a series on HTTP and REST APIs. All examples are from real-world engineering experience.*

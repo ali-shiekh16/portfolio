@@ -20,13 +20,9 @@ export const MAIN_NAV: NavItem[] = [
     href: "/",
   },
   {
-    title: "Lab",
-    href: "/lab",
+    title: "Blog",
+    href: "/blog",
   },
-  // {
-  //   title: "Components",
-  //   href: "/components",
-  // },
 ];
 
 export const SOURCE_CODE_GITHUB_REPO = "ali-shiekh16/portfolio";
