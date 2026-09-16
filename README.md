@@ -1,12 +1,7 @@
 # Ali Sheikh - Portfolio
 
-A modern, minimal portfolio website showcasing my work as a Full-Stack Web Developer with expertise in interactive web experiences and creative development.
-
-🌐 **Live Site**: [alee.live](https://alee.live)
-
-## About This Project
-
-This portfolio website serves as both a showcase of my professional work and a component registry for reusable UI elements. Built with modern web technologies, it demonstrates my expertise in full-stack development, interactive animations, and clean code architecture.
+A modern, minimal portfolio website. 
+🌐 **Live Site**: [aleee.live](https://aleee.live)
 
 ## ✨ Features
 
@@ -211,12 +206,12 @@ Special thanks to the open-source community and these amazing projects:
 - [Radix UI](https://radix-ui.com) - Low-level UI primitives
 - [Lucide](https://lucide.dev) - Beautiful icon library
 
-## 📊 Stats
+<!-- ## 📊 Stats
 
 [![GitHub Stars](https://img.shields.io/github/stars/ali-shiekh16/portfolio?style=social)](https://github.com/ali-shiekh16/portfolio/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/ali-shiekh16/portfolio?style=social)](https://github.com/ali-shiekh16/portfolio/network/members)
-[![MIT License](https://img.shields.io/github/license/ali-shiekh16/portfolio)](https://github.com/ali-shiekh16/portfolio/blob/main/LICENSE)
+[![MIT License](https://img.shields.io/github/license/ali-shiekh16/portfolio)](https://github.com/ali-shiekh16/portfolio/blob/main/LICENSE) -->
 
 ---
 
-Built with ❤️ by [Muhammed Ali](https://alee.live) in Karachi, Pakistan
+Built with ❤️ by [Muhammed Ali](https://aleee.live) in Karachi, Pakistan

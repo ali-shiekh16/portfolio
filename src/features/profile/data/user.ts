@@ -16,13 +16,13 @@ export const USER: User = {
   address: "Karachi, Pakistan",
   phoneNumber: "KzkyMzE3MjI3NTY5OA==", // E.164 format, base64 encoded (https://t.io.vn/base64-string-converter)
   email: "YWxpLnNoaWVraDE2QG91dGxvb2suY29t", // base64 encoded
-  website: "https://aleee.tech",
+  website: "https://aleee.live",
   jobTitle: "Software & AI Engineer ",
   jobs: [
     {
       title: "Software Engineer",
-      company: "AIFirstPartners",
-      website: "https://aifirstpartners.com",
+      company: "eOcean",
+      website: "https://eocean.net/",
     },
   ],
   about: `
@@ -40,7 +40,6 @@ I enjoy mentoring engineers, improving engineering processes, and delivering mea
 `,
   avatar: "/images/dp.webp",
   ogImage: "",
-  // "https://assets.chanhdai.com/images/screenshot-og-image-light.png?t=1755355653",
   namePronunciationUrl: "/audio/name.mp3",
   keywords: [
     "muhammedali",

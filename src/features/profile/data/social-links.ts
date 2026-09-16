@@ -5,7 +5,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
     icon: "/images/social/linkedin.webp",
     title: "LinkedIn",
     description: "ali",
-    href: "https://www.linkedin.com/in/muhammed-ali-74b04a213/",
+    href: "https://www.linkedin.com/in/ali-shiekh16/",
   },
   {
     icon: "/images/social/github.webp",

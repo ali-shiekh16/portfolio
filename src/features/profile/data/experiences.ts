@@ -2,6 +2,37 @@ import type { Experience } from "../types/experiences";
 
 export const EXPERIENCES: Experience[] = [
   {
+    id: "eocean",
+    companyName: "EOcean",
+    positions: [
+      {
+        id: "software-engineer",
+        title: "Software Engineer",
+        employmentPeriod: {
+          start: "April, 15",
+          // end: "March, 2026",
+        },
+        employmentType: "Full-time",
+        icon: "code",
+        description: `- Develop backend systems (Node.js/Express, transitioning to Java/Spring Boot) powering WhatsApp chatbots for 500+ enterprise deployments handling 10M+ monthly messages
+- Support both cloud and on-premise deployments; provide technical support and on-site troubleshooting for enterprise clients with varying infrastructure requirements and compliance constraints
+- Work on microservices architecture supporting conversation flows, AI integration, dynamic forms, third-party APIs and payment processing`,
+
+        skills: [
+          "Nestjs",
+          "Springboot",
+          "Java",
+          "Typescript",
+          "React",
+          "Python",
+          "AWS",
+        ],
+        isExpanded: true,
+      },
+    ],
+    isCurrentEmployer: true,
+  },
+  {
     id: "ai-first-partners",
     companyName: "AI First Partners",
     positions: [
@@ -9,8 +40,8 @@ export const EXPERIENCES: Experience[] = [
         id: "software-engineer",
         title: "Software Engineer",
         employmentPeriod: {
-          start: 'Nov, 2025',
-          end: 'March, 2026'
+          start: "Nov, 2025",
+          end: "March, 2026",
         },
         employmentType: "Full-time",
         icon: "code",
