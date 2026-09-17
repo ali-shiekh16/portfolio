@@ -49,6 +49,9 @@ Why? Because TCP itself has a head-of-line blocking problem at the transport lay
 
 HTTP/3 also significantly reduces connection establishment time. Traditional HTTPS over TCP requires multiple round trips to establish the TCP connection and then the TLS handshake. QUIC combines these into a single step, making connections much faster — especially noticeable on mobile networks where latency is high.
 
+
+![How HTTP/1.1, HTTP/2, and HTTP/3 solve head-of-line blocking](/images/blog/how-the-web-talks/head-of-line.png)
+
 | Version | Key Innovation |
 |---|---|
 | HTTP/1.0 | Basic request-response, one connection per request |
@@ -56,6 +59,8 @@ HTTP/3 also significantly reduces connection establishment time. Traditional HTT
 | HTTP/2 | Multiplexing, binary framing, header compression |
 | HTTP/3 | Built on QUIC/UDP, eliminates transport-level blocking |
 
+
+![The evolution of HTTP from one connection per request to QUIC over UDP](/images/blog/how-the-web-talks/evolution-of-http.png)
 ---
 
 ## HTTP Messages — The Anatomy of a Request and Response
@@ -94,6 +99,8 @@ Cache-Control: max-age=3600
 
 {"id": 1, "title": "HTTP Deep Dive"}
 ```
+
+![Anatomy of an HTTP request and response, including request lines, status lines, headers, and bodies](/images/blog/how-the-web-talks/anatomy-of-http-message.png)
 
 ---
 

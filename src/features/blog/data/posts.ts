@@ -26,7 +26,9 @@ function getMDXData(dir: string) {
   const mdxFiles = getMDXFiles(dir);
 
   return mdxFiles.map<Post>((file) => {
-    const { metadata, content } = readMDXFile(path.join(dir, file));
+    const { metadata, content } = readMDXFile(
+      path.join(/*turbopackIgnore: true*/ dir, file)
+    );
 
     const slug = path.basename(file, path.extname(file));
 
@@ -39,7 +41,12 @@ function getMDXData(dir: string) {
 }
 
 export function getAllPosts() {
-  return getMDXData(path.join(process.cwd(), "src/features/blog/content")).sort(
+  return getMDXData(
+    path.join(
+      /*turbopackIgnore: true*/ process.cwd(),
+      "src/features/blog/content"
+    )
+  ).sort(
     (a, b) =>
       new Date(b.metadata.createdAt).getTime() -
       new Date(a.metadata.createdAt).getTime()
